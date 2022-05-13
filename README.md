@@ -2,6 +2,20 @@
 
 Library for working with the [v2.X InfluxDB API](https://docs.influxdata.com/influxdb/v2.2/api/).
 
+## Installation
+
+```elixir
+def deps do
+  [
+    {:influx_ex, "~> 0.1.0"},
+    # below are optional deps but InfluxEx will try to use them as defaults
+    {:mojito, "~> 0.7.11"},
+    {:jason, "~> 1.0"},
+    {:nimble_csv, "~> 1.0"}
+  ]
+end
+```
+
 ## Setup
 
 To get started quickly you need to add these optional dependencies to your deps:
