@@ -8,7 +8,9 @@ Library for working with the [v2.X InfluxDB API](https://docs.influxdata.com/inf
 def deps do
   [
     {:influx_ex, "~> 0.1.0"},
-    # below are optional deps but InfluxEx will try to use them as defaults
+    # below are optional deps but InfluxEx will try to use them as defaults so
+    # if you are okay with these default ensure they are added in your deps as
+    # well.
     {:mojito, "~> 0.7.11"},
     {:jason, "~> 1.0"},
     {:nimble_csv, "~> 1.0"}
