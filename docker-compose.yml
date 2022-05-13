@@ -1,0 +1,38 @@
+version: '3'
+
+volumes:
+  influxdb_data:
+    driver: local
+  influxdb_test_data:
+    driver: local
+
+services:
+  influxdb:
+    image: influxdb:2.2-alpine
+    volumes:
+      - influxdb_data:/var/lib/influxdb2/data
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=influx_ex
+      - DOCKER_INFLUXDB_INIT_PASSWORD=influx_dev
+      - DOCKER_INFLUXDB_INIT_ORG=influx_ex_dev
+      - DOCKER_INFLUXDB_INIT_BUCKET=data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=devtoken
+
+  influxdb_test:
+    image: influxdb:2.2-alpine
+    volumes:
+      - influxdb_test_data:/var/lib/influxdb2/test/data
+    ports:
+      - "8087:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=influx_ex
+      - DOCKER_INFLUXDB_INIT_PASSWORD=influx_test
+      - DOCKER_INFLUXDB_INIT_ORG=influx_ex_test
+      - DOCKER_INFLUXDB_INIT_BUCKET=data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=testtoken
+
+
