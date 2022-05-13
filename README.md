@@ -1,5 +1,7 @@
 # InfluxEx
 
+[![Hex.pm](https://img.shields.io/hexpm/v/grizzly?style=flat-square)](https://hex.pm/packages/influx_ex)
+
 Library for working with the [v2.X InfluxDB API](https://docs.influxdata.com/influxdb/v2.2/api/).
 
 ## Installation
