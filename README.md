@@ -9,7 +9,7 @@ Library for working with the [v2.X InfluxDB API](https://docs.influxdata.com/inf
 ```elixir
 def deps do
   [
-    {:influx_ex, "~> 0.1.0"},
+    {:influx_ex, "~> 0.1.1"},
     # below are optional deps but InfluxEx will try to use them as defaults so
     # if you are okay with these defaults ensure they are added in your deps as
     # well.

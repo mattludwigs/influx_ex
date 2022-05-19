@@ -161,7 +161,8 @@ defmodule InfluxEx.Flux do
   @doc """
   Run the flux query
   """
-  @spec run_query(t(), Client.t()) :: {:ok, InfluxEx.tables()} | {:error, InfluxEx.error()}
+  @spec run_query(t(), Client.t(), [InfluxEx.query_opt()]) ::
+          {:ok, InfluxEx.tables()} | {:error, InfluxEx.error()}
   def run_query(flux_query, client, opts \\ []) do
     query = to_string(flux_query)
 
