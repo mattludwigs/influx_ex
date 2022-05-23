@@ -26,7 +26,7 @@ defmodule InfluxEx.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :mojito]
+      extra_applications: [:logger, :req]
     ]
   end
 
@@ -36,7 +36,7 @@ defmodule InfluxEx.MixProject do
       {:dialyxir, "~> 1.1", only: [:test, :dev], runtime: false},
       {:ex_doc, "~> 0.28", only: :docs, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:mojito, "~> 0.7.11", optional: true},
+      {:req, "~> 0.2.0", optional: true},
       {:jason, "~> 1.3", optional: true},
       {:nimble_csv, "~> 1.2", optional: true}
     ]
@@ -45,7 +45,7 @@ defmodule InfluxEx.MixProject do
   defp dialyzer() do
     [
       flags: [:unmatched_returns, :error_handling, :race_conditions],
-      plt_add_apps: [:mojito, :jason, :nimble_csv],
+      plt_add_apps: [:req, :jason, :nimble_csv],
       ignore_warnings: "dialyzer.ignore-warnings"
     ]
   end

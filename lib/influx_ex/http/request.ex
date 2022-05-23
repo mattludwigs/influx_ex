@@ -74,9 +74,17 @@ defmodule InfluxEx.HTTP.Request do
     {:ok, response}
   end
 
-  defp parse_body(%{endpoint: "/query"}, response, client) do
-    parsed = client.csv_library.parse_string(response.body)
+  defp parse_body(%{endpoint: "/query"}, %{body: body} = response, _client) when is_list(body) do
+    {:ok, response}
+  end
+
+  defp parse_body(%{endpoint: "/query"}, %{body: body} = response, client) when is_binary(body) do
+    parsed = client.csv_library.parse_string(body)
     {:ok, %{response | body: parsed}}
+  end
+
+  defp parse_body(_request, %{body: body} = response, _client) when is_map(body) do
+    {:ok, response}
   end
 
   defp parse_body(_request, response, client) do
@@ -166,8 +174,12 @@ defmodule InfluxEx.HTTP.Request do
     headers ++ [{"Content-type", "application/json"}]
   end
 
-  defp handle_http_error(client, response) do
-    {:ok, decoded} = client.json_library.decode(response.body)
+  defp handle_http_error(_client, %{body: body}) when is_map(body) do
+    {:error, make_exception(body)}
+  end
+
+  defp handle_http_error(client, %{body: body}) when is_binary(body) do
+    {:ok, decoded} = client.json_library.decode(body)
 
     {:error, make_exception(decoded)}
   end

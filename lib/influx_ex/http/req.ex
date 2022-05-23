@@ -1,6 +1,6 @@
-defmodule InfluxEx.HTTP.Mojito do
+defmodule InfluxEx.HTTP.Req do
   @moduledoc """
-  HTTP support for the Mojito library
+  `InfluxEx.HTTP` implementation for the Req library
   """
 
   @behaviour InfluxEx.HTTP
@@ -10,27 +10,23 @@ defmodule InfluxEx.HTTP.Mojito do
   @impl InfluxEx.HTTP
   def send_request(:get, url, headers, _payload) do
     url
-    |> Mojito.get(headers)
+    |> Req.get!(headers: headers)
     |> handle_response()
   end
 
   def send_request(:post, url, headers, payload) do
     url
-    |> Mojito.post(headers, payload)
+    |> Req.post!(payload, headers: headers)
     |> handle_response()
   end
 
   def send_request(:delete, url, headers, _payload) do
     url
-    |> Mojito.delete(headers)
+    |> Req.delete!(headers: headers)
     |> handle_response()
   end
 
-  defp handle_response({:ok, response}) do
-    {:ok, Response.new(response.status_code, response.body)}
-  end
-
-  defp handle_response({:error, _reason} = error) do
-    error
+  defp handle_response(%Req.Response{} = req_resp) do
+    {:ok, Response.new(req_resp.status, req_resp.body)}
   end
 end

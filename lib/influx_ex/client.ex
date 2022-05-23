@@ -4,13 +4,13 @@ defmodule InfluxEx.Client do
 
   The client allows for customizing how JSON, CSV, and HTTP are all handled. By
   default the client will try to use `:jason` for JSON, `:nimble_csv` for CSV,
-  and `:mojito` for HTTP requests.
+  and `:req` for HTTP requests.
 
   To ensure all these libraries are available add these lines to your deps in
   your `mix.exs`:
 
   ```elixir
-  {:mojito, "~> 0.7.11"},
+  {:req, "~> 0.2.0"},
   {:jason, "~> 1.0"},
   {:nimble_csv, "~> 1.0"}
   ```
@@ -58,7 +58,7 @@ defmodule InfluxEx.Client do
 
   InfluxEx provides a behaviour for supporting different HTTP clients. You can
   wrap your chosen HTTP client in the `InfluxEx.HTTP` behaviour and configure
-  the client to use your implementation. By default `InfluxEx` using mojito.
+  the client to use your implementation. By default `InfluxEx` using req.
 
   ```elixir
   InfluxEx.Client.new("mytoken", http_client: MyHTTPLibraryImplementation)
@@ -77,7 +77,7 @@ defmodule InfluxEx.Client do
     decoding JSON
   * `:csv_library` - a module that implements the `InfluxEx.CSVLibrary`
   * `:http_client` - a module that implements the `InfluxEx.HTTP` behaviour, by
-    default this will try to use the `InfluxEx.HTTP.Mojito` module.
+    default this will try to use the `InfluxEx.HTTP.Req` module.
   * `:org` - the name of the organization inside of the InfluxDB server.
   * `:org_id` the org id of the organization inside of the InfluxDB server.
   """
@@ -118,7 +118,7 @@ defmodule InfluxEx.Client do
     csv_lib = opts[:csv_library] || InfluxEx.CSV
     org = opts[:org]
     org_id = opts[:org_id]
-    http_client = opts[:http_client] || HTTP.Mojito
+    http_client = opts[:http_client] || HTTP.Req
 
     %__MODULE__{
       token: token,

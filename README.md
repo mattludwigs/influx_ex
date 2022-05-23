@@ -13,7 +13,7 @@ def deps do
     # below are optional deps but InfluxEx will try to use them as defaults so
     # if you are okay with these defaults ensure they are added in your deps as
     # well.
-    {:mojito, "~> 0.7.11"},
+    {:req, "~> 0.2.0"}
     {:jason, "~> 1.0"},
     {:nimble_csv, "~> 1.0"}
   ]
@@ -25,7 +25,7 @@ end
 To get started quickly you need to add these optional dependencies to your deps:
 
 ```elixir
-{:mojito, "~> 0.7.11"},
+{:req, "~> 0.2.0"}
 {:jason, "~> 1.0"},
 {:nimble_csv, "~> 1.0"}
 ```
@@ -104,11 +104,11 @@ end
 ### HTTP Client
 
 The InfluxDB API uses the HTTP protocol. By default `InfluxEx` will try to use
-`Mojito` to make HTTP request. If you want to use `Mojito` you will need to add
+`Req` to make HTTP request. If you want to use `Req` you will need to add
 it to your deps in your `mix.exs` file.
 
 ```elixir
-{:mojito, "~> 0.7.11"},
+{:req, "~> 0.2.0"}
 ```
 
 If you use a different HTTP library you can provide the client with a module

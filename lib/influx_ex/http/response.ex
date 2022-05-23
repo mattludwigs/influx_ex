@@ -6,7 +6,7 @@ defmodule InfluxEx.HTTP.Response do
   alias InfluxEx.HTTP
 
   @type t() :: %__MODULE__{
-          body: map() | binary(),
+          body: map() | binary() | list(),
           status_code: HTTP.status_code()
         }
 
