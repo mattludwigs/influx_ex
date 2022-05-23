@@ -1,7 +1,7 @@
 defmodule InfluxEx.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.2.0"
 
   def project do
     [
@@ -70,7 +70,7 @@ defmodule InfluxEx.MixProject do
           InfluxEx.HTTP,
           InfluxEx.HTTP.Request,
           InfluxEx.HTTP.Response,
-          InfluxEx.HTTP.Mojito
+          InfluxEx.HTTP.Req
         ],
         "API Resources": [
           InfluxEx.Bucket,
