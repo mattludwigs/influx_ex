@@ -56,7 +56,7 @@ defmodule InfluxEx.Point do
   If you have all the measurements at once you can use
   `InfluxEx.Point.add_fields/2`.
   """
-  @spec add_field(t(), binary() | atom(), integer()) :: t()
+  @spec add_field(t(), binary() | atom(), integer() | float() | boolean() | binary()) :: t()
   def add_field(point, field_name, field_value) do
     %{point | fields: Map.put(point.fields, field_name, field_value)}
   end
@@ -149,11 +149,19 @@ defmodule InfluxEx.Point do
   end
 
   defp value_as_str(value) when is_integer(value) do
-    Integer.to_string(value)
+    Integer.to_string(value) <> "i"
+  end
+  
+  defp value_as_str(value) when is_float(value) do
+    Float.to_string(value)
+  end
+
+  defp value_as_str(value) when is_boolean(value) do
+    to_string(value)
   end
 
   defp value_as_str(value) when is_binary(value) do
-    value
+    "\"" <> value <> "\""
   end
 
   defp value_as_str(value) when is_atom(value) do
