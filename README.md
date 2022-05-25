@@ -13,7 +13,7 @@ def deps do
     # below are optional deps but InfluxEx will try to use them as defaults so
     # if you are okay with these defaults ensure they are added in your deps as
     # well.
-    {:req, "~> 0.2.0"}
+    {:req, "~> 0.2.0"},
     {:jason, "~> 1.0"},
     {:nimble_csv, "~> 1.0"}
   ]
@@ -25,7 +25,7 @@ end
 To get started quickly you need to add these optional dependencies to your deps:
 
 ```elixir
-{:req, "~> 0.2.0"}
+{:req, "~> 0.2.0"},
 {:jason, "~> 1.0"},
 {:nimble_csv, "~> 1.0"}
 ```
@@ -127,7 +127,7 @@ Elixir data types. By default InfluxEx will try to use the `Jason` library. To
 use this default you need to add `:jason` to you deps in your `mix.exs`:
 
 ```elixir
-{:jason, "~> 1.0"},
+{:jason, "~> 1.0"}
 ```
 
 If you want to use a different JSON library pass a module name into the
