@@ -2,6 +2,17 @@
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.1] - 2022-05-27
+
+### Added
+
+- Support for integer, boolean, and string field types (@djcarpe)
+- Support unix timestamp ranges in Flux query
+
+### Misc
+
+- Documentation fixes (@djcarpe)
+
 ## [v0.2.0] - 2022-05-23
 
 Breaking change: Mojito library was deprecated, so we removed first class
