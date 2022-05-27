@@ -30,8 +30,8 @@ defmodule InfluxEx.Flux do
   """
   @type t() :: %__MODULE__{
           bucket: Bucket.name(),
-          start: binary() | nil,
-          end: binary() | nil,
+          start: binary() | pos_integer() | nil,
+          end: binary() | pos_integer() | nil,
           measurement: binary() | nil,
           field: binary() | nil,
           tags: map(),
@@ -72,8 +72,15 @@ defmodule InfluxEx.Flux do
   |> InfluxEx.Flux.from()
   |> InfluxEx.Flux.range("-15m")
   ```
+  To query using an explicit time range with timestamps:
+
+  ```elixir
+  "my_bucket"
+  |> InfluxEx.Flux.from()
+  |> InfluxEx.Flux.range(1653678115, 1653678175)
+  ```
   """
-  @spec range(t(), binary(), binary() | nil) :: t()
+  @spec range(t(), binary() | pos_integer(), binary() | pos_integer() | nil) :: t()
   def range(f, start, end_t \\ nil) do
     %__MODULE__{f | start: start, end: end_t}
   end
@@ -197,7 +204,11 @@ defmodule InfluxEx.Flux do
     end
 
     defp range_to_string(f) do
-      "range(start: #{f.start})"
+      if f.end do
+        "range(start: #{f.start}, stop: #{f.end})"
+      else
+        "range(start: #{f.start})"
+      end
     end
 
     defp measurement_to_string(f) do
