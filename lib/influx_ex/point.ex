@@ -57,8 +57,10 @@ defmodule InfluxEx.Point do
   `InfluxEx.Point.add_fields/2`.
   """
   @spec add_field(t(), binary() | atom(), integer() | float() | boolean() | binary()) :: t()
-  def add_field(point, field_name, field_value) do
-    %{point | fields: Map.put(point.fields, field_name, field_value)}
+  def add_field(point, field_name, field_value, opts \\ []) do
+    type = opts[:type] || :float
+
+    %{point | fields: Map.put(point.fields, field_name, {field_value, type})}
   end
 
   @doc """
@@ -72,6 +74,18 @@ defmodule InfluxEx.Point do
   """
   @spec add_fields(t(), map()) :: t()
   def add_fields(point, fields) do
+    fields =
+      Enum.reduce(fields, %{}, fn
+        {field_name, {_field_value, _field_type} = field_value}, formatted ->
+          Map.put(formatted, field_name, field_value)
+
+        {field_name, field_value}, formatted when is_number(field_value) ->
+          Map.put(formatted, field_name, {field_value, :float})
+
+        {field_name, field_value}, formatted ->
+          Map.put(formatted, field_name, field_value)
+      end)
+
     %{point | fields: fields}
   end
 
@@ -125,11 +139,19 @@ defmodule InfluxEx.Point do
   end
 
   defp tags_to_set(point) do
-    data_as_set(point.tags)
+    tag_data_as_set(point.tags)
   end
 
   defp fields_to_set(point) do
     data_as_set(point.fields)
+  end
+
+  defp tag_data_as_set(data) do
+    data
+    |> Enum.reduce("", fn {tn, tv}, str ->
+      str <> "#{name_as_str(tn)}=#{tag_value_as_str(tv)},"
+    end)
+    |> String.trim_trailing(",")
   end
 
   defp data_as_set(data) do
@@ -148,10 +170,30 @@ defmodule InfluxEx.Point do
     name
   end
 
+  defp tag_value_as_str(value) when is_binary(value) do
+    value
+  end
+
+  defp tag_value_as_str(value) do
+    value_as_str(value)
+  end
+
+  defp value_as_str({value, :integer}) do
+    Integer.to_string(value) <> "i"
+  end
+
+  defp value_as_str({value, :float}) when is_float(value) do
+    Float.to_string(value)
+  end
+
+  defp value_as_str({value, :float}) when is_integer(value) do
+    Integer.to_string(value)
+  end
+
   defp value_as_str(value) when is_integer(value) do
     Integer.to_string(value) <> "i"
   end
-  
+
   defp value_as_str(value) when is_float(value) do
     Float.to_string(value)
   end
