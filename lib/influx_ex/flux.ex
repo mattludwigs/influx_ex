@@ -26,6 +26,13 @@ defmodule InfluxEx.Flux do
         }
 
   @typedoc """
+  Options to pass to the `from/2` function
+
+  - `:imports` - a list of Flux libraries to import
+  """
+  @type from_opt() :: {:imports, binary()}
+
+  @typedoc """
   Data structure for a flux query
   """
   @type t() :: %__MODULE__{
@@ -36,7 +43,8 @@ defmodule InfluxEx.Flux do
           field: binary() | nil,
           tags: map(),
           aggregate_window: aggregate_window() | nil,
-          fill_value_use_previous: boolean()
+          fill_value_use_previous: boolean(),
+          imports: [binary()]
         }
 
   defstruct bucket: nil,
@@ -46,7 +54,8 @@ defmodule InfluxEx.Flux do
             field: nil,
             tags: %{},
             aggregate_window: nil,
-            fill_value_use_previous: false
+            fill_value_use_previous: false,
+            imports: []
 
   @doc """
   Set the bucket for the query
@@ -57,9 +66,11 @@ defmodule InfluxEx.Flux do
   InfluxEx.Flux.from("my bucket")
   ```
   """
-  @spec from(Bucket.name()) :: t()
-  def from(bucket) do
-    %__MODULE__{bucket: bucket}
+  @spec from(Bucket.name(), [from_opt()]) :: t()
+  def from(bucket, opts \\ []) do
+    imports = opts[:imports] || []
+
+    %__MODULE__{bucket: bucket, imports: imports}
   end
 
   @doc """
@@ -181,7 +192,8 @@ defmodule InfluxEx.Flux do
       case validate(f) do
         :ok ->
           """
-          #{from_to_string(f)}
+          #{imports_to_string(f)}
+          |> #{from_to_string(f)}
           |> #{range_to_string(f)}
           |> #{measurement_to_string(f)}
           |> #{field_to_string(f)}
@@ -197,6 +209,12 @@ defmodule InfluxEx.Flux do
           #{inspect(missing)}
           """
       end
+    end
+
+    defp imports_to_string(f) do
+      Enum.reduce(f.imports, "", fn fimport, str ->
+        str <> "import #{fimport}\n"
+      end)
     end
 
     defp from_to_string(f) do
