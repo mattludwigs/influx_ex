@@ -178,10 +178,30 @@ defmodule InfluxEx.Flux do
 
   @doc """
   Run the flux query
+
+  You can either build a Flux query using the `InfluxEx.Flux` query builder API
+  or you can provide a raw flux query.
+
+  ```elixir
+  query = \"\"\"
+  from("my-bucket")
+  |> range(start: -15m)
+  |> filter(fn: (r) => r._measurement == "rpm")
+  |> aggregateWindow(every: 1m, fn: max)
+  \"\"\"
+
+  InfluxEx.Flux.run_query(query, my_client)
+  ```
   """
-  @spec run_query(t(), Client.t(), [InfluxEx.query_opt()]) ::
+  @spec run_query(t() | binary(), Client.t(), [InfluxEx.query_opt()]) ::
           {:ok, InfluxEx.tables()} | {:error, InfluxEx.error()}
-  def run_query(flux_query, client, opts \\ []) do
+  def run_query(flux_query, client, opts \\ [])
+
+  def run_query(flux_query, client, opts) when is_binary(flux_query) do
+    InfluxEx.query(client, flux_query, opts)
+  end
+
+  def run_query(flux_query, client, opts) do
     query = to_string(flux_query)
 
     InfluxEx.query(client, query, opts)
