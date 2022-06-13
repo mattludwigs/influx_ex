@@ -26,7 +26,6 @@ InfluxEx.Buckets.create(client, "my-bucket", group_shard: true)
 
 - Typespec for `InfluxEx.Buckets.create/3`
 
-
 ## [v0.2.1] - 2022-05-27
 
 ### Added
