@@ -2,6 +2,31 @@
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.0] - 2022-06-13
+
+### Breaking functional change
+
+When calling `InfluxEx.Buckets.create/3` we would default shard group duration
+values. In this release that no longer happens and you will to explicitly set
+those values.
+
+```elixir
+InfluxEx.Buckets.create(client, "my-bucket", group_shard: true)
+```
+
+### Changes
+
+- Now required to enabled group shards when creating buckets
+
+### Added
+
+- Added `:group_shard` option to `InfluxEx.Buckets.create_bucket_opt()`
+
+### Fixed
+
+- Typespec for `InfluxEx.Buckets.create/3`
+
+
 ## [v0.2.1] - 2022-05-27
 
 ### Added
