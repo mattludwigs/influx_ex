@@ -14,6 +14,11 @@ defmodule InfluxEx.Buckets do
   over the bucket's data retention rules, or you can provide the short hand
   `Bucket.expires_in()` to the `:expires_in` option.
 
+  When using the `:expires_in` optional shorthand for build a retention policy
+  group sharding is disabled by default. If you want to enable group sharding
+  set the `:group_shard` option to `true` and the retention policy will include
+  the group shard duration based off the `:expires_in` field.
+
   By default the retention will by 30 days if no retention policy is provided.
   If both the `:retention_rules` field and the `:expires_in` field are provided
   the `:retention_rules` field will be used.
@@ -21,6 +26,7 @@ defmodule InfluxEx.Buckets do
   @type create_bucket_opt() ::
           {:retention_rules, [Bucket.retention_rule()]}
           | {:expires_in, Bucket.expires_in()}
+          | {:group_shard, boolean()}
           | {:rp, binary()}
           | {:schema_type, Bucket.schema_type()}
           | {:org_id, Org.id()}
@@ -36,7 +42,8 @@ defmodule InfluxEx.Buckets do
   @doc """
   Create a new bucket
   """
-  @spec create(Client.t(), Bucket.name()) :: {:ok, Bucket.t()} | {:error, InfluxEx.error()}
+  @spec create(Client.t(), Bucket.name(), [create_bucket_opt()]) ::
+          {:ok, Bucket.t()} | {:error, InfluxEx.error()}
   def create(client, bucket_name, opts \\ []) do
     org_id = client.org_id || opts[:org_id]
 

@@ -41,71 +41,79 @@ defmodule InfluxEx.API.Resources do
     if rules = opts[:retention_rules] do
       rules
     else
-      retention_policy_from_expires_in(opts[:expires_in])
+      retention_policy_from_expires_in(opts[:expires_in], opts)
     end
   end
 
-  defp retention_policy_from_expires_in(nil) do
+  defp shard_group_value(value, opts) do
+    if opts[:group_shard] do
+      value
+    else
+      0
+    end
+  end
+
+  defp retention_policy_from_expires_in(nil, opts) do
     [
       %{
         everySeconds: 2_592_000,
-        shardGroupDurationSeconds: 86_400,
+        shardGroupDurationSeconds: shard_group_value(86_400, opts),
         type: :expire
       }
     ]
   end
 
-  defp retention_policy_from_expires_in(:never) do
+  defp retention_policy_from_expires_in(:never, opts) do
     [
       %{
         everySeconds: 0,
-        shardGroupDurationSeconds: 604_800,
+        shardGroupDurationSeconds: shard_group_value(604_800, opts),
         type: :expire
       }
     ]
   end
 
-  defp retention_policy_from_expires_in({days, :days}) do
+  defp retention_policy_from_expires_in({days, :days}, opts) do
     seconds_in_day = 86_400
 
     [
       %{
         everySeconds: seconds_in_day * days,
-        shardGroupDurationSeconds: seconds_in_day,
+        shardGroupDurationSeconds: shard_group_value(seconds_in_day, opts),
         type: :expire
       }
     ]
   end
 
-  defp retention_policy_from_expires_in({hours, :hours}) when hours in [48, 72] do
+  defp retention_policy_from_expires_in({hours, :hours}, opts) when hours in [48, 72] do
     seconds_in_hour = 3_600
 
     [
       %{
         everySeconds: seconds_in_hour * hours,
-        shardGroupDurationSeconds: 86_400,
+        shardGroupDurationSeconds: shard_group_value(86_400, opts),
         type: :expire
       }
     ]
   end
 
-  defp retention_policy_from_expires_in({hours, :hours}) do
+  defp retention_policy_from_expires_in({hours, :hours}, opts) do
     seconds_in_hour = 3_600
 
     [
       %{
         everySeconds: seconds_in_hour * hours,
-        shardGroupDurationSeconds: seconds_in_hour,
+        shardGroupDurationSeconds: shard_group_value(seconds_in_hour, opts),
         type: :expire
       }
     ]
   end
 
-  defp retention_policy_from_expires_in({_, :years}) do
+  defp retention_policy_from_expires_in({_, :years}, opts) do
     [
       %{
         everySeconds: 31_536_000,
-        shardGroupDurationSeconds: 604_800,
+        shardGroupDurationSeconds: shard_group_value(604_800, opts),
         type: :expire
       }
     ]
