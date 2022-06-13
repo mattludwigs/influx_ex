@@ -213,7 +213,7 @@ defmodule InfluxEx.Flux do
         :ok ->
           """
           #{imports_to_string(f)}
-          |> #{from_to_string(f)}
+          #{from_to_string(f)}
           |> #{range_to_string(f)}
           |> #{measurement_to_string(f)}
           |> #{field_to_string(f)}
