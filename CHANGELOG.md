@@ -2,6 +2,12 @@
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.1] - 2022-06-27
+
+### Fixed
+
+- Handling bucket creation response's schema type field
+
 ## [v0.3.0] - 2022-06-13
 
 ### Breaking functional change
@@ -74,6 +80,7 @@ safely update.
 
 Initial release!
 
+[v0.3.1]: https://github.com/mattludwigs/influx_ex/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/mattludwigs/influx_ex/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://github.com/mattludwigs/influx_ex/compare/v0.2.0...v0.2.1
 [v0.2.0]: https://github.com/mattludwigs/influx_ex/compare/v0.1.1...v0.2.0
