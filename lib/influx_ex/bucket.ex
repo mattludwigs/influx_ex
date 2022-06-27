@@ -157,6 +157,14 @@ defmodule InfluxEx.Bucket do
     %{bucket | description: desc}
   end
 
+  defp update_fields({"schemaType", "implicit"}, bucket) do
+    %{bucket | schema_type: :implicit}
+  end
+
+  defp update_fields({"schemaType", "explicit"}, bucket) do
+    %{bucket | schema_type: :explicit}
+  end
+
   defp update_datetime_field(bucket, "createdAt", datetime), do: %{bucket | created_at: datetime}
   defp update_datetime_field(bucket, "updatedAt", datetime), do: %{bucket | updated_at: datetime}
 
