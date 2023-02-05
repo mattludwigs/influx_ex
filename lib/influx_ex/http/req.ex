@@ -16,7 +16,7 @@ defmodule InfluxEx.HTTP.Req do
 
   def send_request(:post, url, headers, payload) do
     url
-    |> Req.post!(payload, headers: headers)
+    |> Req.post!(body: payload, headers: headers)
     |> handle_response()
   end
 
