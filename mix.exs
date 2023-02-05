@@ -36,7 +36,7 @@ defmodule InfluxEx.MixProject do
       {:dialyxir, "~> 1.1", only: [:test, :dev], runtime: false},
       {:ex_doc, "~> 0.28", only: :docs, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:req, "~> 0.2.0", optional: true},
+      {:req, "~> 0.3.0", optional: true},
       {:jason, "~> 1.3", optional: true},
       {:nimble_csv, "~> 1.2", optional: true}
     ]
